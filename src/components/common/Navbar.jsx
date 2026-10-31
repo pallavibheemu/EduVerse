@@ -31,8 +31,7 @@ export const Navbar = () => {
             setLoading(true)
             try{
                 const res= await apiConnector("GET", categories.CATEGORIES_API)
-                console.log(res?.data?.data)
-                setSubLinks(res.data.data)
+                setSubLinks(Array.isArray(res?.data?.data) ? res.data.data : [])
             }
             catch(error){
                 console.log("Could not fetch Categories. ", error)
@@ -78,7 +77,7 @@ export const Navbar = () => {
                                         { loading? (
                                             <p className='text-center'>Loading...</p>
 
-                                        ):subLinks.length?(
+                                        ):subLinks.length > 0 ?(
                                                <>
                                                 {
                                                     subLinks?.filter((subLink) => subLink?.courses?.length >0 )?.map((subLink, i) => (
