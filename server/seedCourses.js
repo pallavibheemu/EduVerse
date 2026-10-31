@@ -8,7 +8,7 @@ const Profile = require("./models/Profile");
 const Category = require("./models/Category");
 const Course = require("./models/Course");
 const Section = require("./models/Section");
-const SubSection = require("./models/Subsection");
+const SubSection = require("./models/SubSection");
 
 const DEMO_PASSWORD = process.env.DEMO_INSTRUCTOR_PASSWORD;
 

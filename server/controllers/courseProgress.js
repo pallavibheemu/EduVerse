@@ -1,5 +1,5 @@
 const CourseProgress = require("../models/CourseProgress")
-const SubSection = require("../models/Subsection")
+const SubSection = require("../models/SubSection")
 const mongoose = require("mongoose");
 
 

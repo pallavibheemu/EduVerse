@@ -3,7 +3,7 @@ const Category = require("../models/Category");
 const User = require("../models/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
 const CourseProgress = require("../models/CourseProgress");
-const Subsection = require("../models/Subsection");
+const Subsection = require("../models/SubSection");
 const Section = require("../models/Section");
 const { convertSecondsToDuration } = require("../utils/secToDuration");
 // Function to create a new course
