@@ -31,6 +31,12 @@ export const Navbar = () => {
             setLoading(true)
             try{
                 const res= await apiConnector("GET", categories.CATEGORIES_API)
+
+                console.log("FULL RESPONSE:", res);
+                console.log("CATEGORY DATA:", res?.data?.data);
+                console.log("IS ARRAY:", Array.isArray(res?.data?.data));
+
+                
                 setSubLinks(Array.isArray(res?.data?.data) ? res.data.data : [])
             }
             catch(error){
@@ -77,7 +83,7 @@ export const Navbar = () => {
                                         { loading? (
                                             <p className='text-center'>Loading...</p>
 
-                                        ):subLinks.length > 0 ?(
+                                        ):subLinks?.length > 0 ?(
                                                <>
                                                 {
                                                     subLinks?.filter((subLink) => subLink?.courses?.length >0 )?.map((subLink, i) => (
