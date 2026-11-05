@@ -29,12 +29,17 @@ app.use(
 	})
 )
 
+const allowedOrigins = [
+    "http://localhost:3000",
+    "https://edu-verse-three-tau.vercel.app"
+];
+
 app.use(
-	fileUpload({
-		useTempFiles:true,
-		tempFileDir:"/tmp", //so any file uploaded will be stored in a temporary file then you store it to cloudinary
-	})
-)
+    cors({
+        origin: allowedOrigins,
+        credentials: true,
+    })
+);
 //cloudinary connection
 cloudinaryConnect();
 
