@@ -22,12 +22,6 @@ database.connect(); //Now your server is connected to MongoDB.
 //middlewares
 app.use(express.json()); //Converts JSON into JavaScript objects. "email":"abc@gmail.com" becomes req.body.email
 app.use(cookieParser());
-app.use(
-	cors({
-		origin:"http://localhost:3000", 
-		credentials:true, //credentials:true allows cookies and authorization headers to be sent.
-	})
-)
 
 const allowedOrigins = [
     "http://localhost:3000",
