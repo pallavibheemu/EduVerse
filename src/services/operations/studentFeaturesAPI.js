@@ -67,9 +67,21 @@ export async function BuyCourse(token, courses, user_details, navigate, dispatch
                 name: `${user_details.firstName} ${user_details.lastName}`,
                 email: user_details.email,
             },
-            handler: function(response){
-                sendPaymentSuccessEmail(response, orderResponse.data.data.amount, token)
-                verifyPayment({...response, courses}, token, navigate, dispatch)
+            handler: async function(response) {
+                const verified = await verifyPayment(
+                    { ...response, courses },
+                    token,
+                    navigate,
+                    dispatch
+                );
+
+                if (verified) {
+                    sendPaymentSuccessEmail(
+                        response,
+                        orderResponse.data.data.amount,
+                        token
+                    );
+                }
             },
         }
         const paymentObject = new window.Razorpay(options)
@@ -88,32 +100,45 @@ export async function BuyCourse(token, courses, user_details, navigate, dispatch
 
 
 //verify the payment
-async function verifyPayment(bodyData, token, navigate, dispatch){
-    const toastId = toast.loading("Verifying Payment...")
-    dispatch(setPaymentLoading(true))
-    try{
-        const response = await apiConnector("POST", COURSE_VERIFY_API, bodyData, {
-            Authorization: `Bearer ${token}`,
-        })
+async function verifyPayment(bodyData, token, navigate, dispatch) {
+    const toastId = toast.loading("Verifying Payment...");
+    dispatch(setPaymentLoading(true));
 
+    let verified = false;
 
-        console.log("VERIFY PAYMENT RESPONSE FROM BACKEND...........", response)
+    try {
+        const response = await apiConnector(
+            "POST",
+            COURSE_VERIFY_API,
+            bodyData,
+            {
+                Authorization: `Bearer ${token}`,
+            }
+        );
 
-        if(!response.data.success){
-            throw new Error(response.data.message)
+        console.log("VERIFY PAYMENT RESPONSE FROM BACKEND:", response);
+
+        if (!response.data.success) {
+            throw new Error(response.data.message);
         }
 
-        toast.success("Payment Successfull. You are Added to the course")
-        navigate("/dashboard/enrolled-courses") //go to this page
-        dispatch(resetCart()) //to this function
-    }catch(error){
-        console.log("PAYMENT VERIFY ERROR...........", error)
-        toast.error("Couldn't Verify Payment.")
-    }
-    toast.dismiss(toastId)
-    dispatch(setPaymentLoading(false))
-}
+        verified = true;
 
+        toast.success("Payment Successful! You are enrolled in the course.");
+        navigate("/dashboard/enrolled-courses");
+        dispatch(resetCart());
+
+    } catch (error) {
+        console.log("PAYMENT VERIFY ERROR:", error);
+        toast.error("Couldn't Verify Payment.");
+
+    } finally {
+        toast.dismiss(toastId);
+        dispatch(setPaymentLoading(false));
+    }
+
+    return verified;
+}
 
 async function sendPaymentSuccessEmail(response, amount, token){
     try{

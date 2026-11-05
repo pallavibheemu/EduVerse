@@ -211,26 +211,6 @@ const enrollStudents = async (courses, userId) => {
         }
 
         console.log("Student enrolled successfully:", enrolledStudent._id);
-
-        // Send enrollment email separately.
-        // Email failure should not invalidate enrollment.
-        try {
-            const emailResponse = await mailSender(
-                enrolledStudent.email,
-                `Successfully Enrolled into ${enrolledCourse.courseName}`,
-                courseEnrollmentEmail(
-                    enrolledCourse.courseName,
-                    `${enrolledStudent.firstName} ${enrolledStudent.lastName}`
-                )
-            );
-
-            console.log(
-                "Enrollment email result:",
-                emailResponse?.response || "Email service returned no response"
-            );
-        } catch (emailError) {
-            console.error("Enrollment email failed:", emailError.message);
-        }
     }
 };
 
