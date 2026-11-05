@@ -15,32 +15,49 @@ const {
 }= settingsEndpoints
 
 
-export function updateDisplayPicture(token, formData){
+export function updateDisplayPicture(token, formData) {
     return async (dispatch) => {
-        const toastId= toast.loading("Loading...")
-        try{
-            const response= await apiConnector("PUT", UPDATE_DISPLAY_PICTURE_API, formData, {
-                "Content-Type" : "multipart/form-data",
-                Authorization: `Bearer ${token}`,
-            }) //here in the formDAta, we have the image that the user wants to update, hence we send it to the backend
-            //and content-type means, the type of contetnt that i am sending the formdata is specified here
+        const toastId = toast.loading("Uploading profile picture...");
 
-            console.log(response);
-            if(!response.data.success){
-                throw new Error(response.data.message)
+        try {
+            const response = await apiConnector(
+                "PUT",
+                UPDATE_DISPLAY_PICTURE_API,
+                formData,
+                {
+                    Authorization: `Bearer ${token}`,
+                }
+            );
+
+            console.log("PROFILE PICTURE RESPONSE:", response.data);
+
+            if (!response.data.success) {
+                throw new Error(response.data.message);
             }
 
             const updatedUser = response.data.data;
+
             localStorage.setItem("user", JSON.stringify(updatedUser));
 
-            toast.success("Display Picture Updated Successfully")
-            dispatch(setUser( updatedUser))
-        }catch(error){
-            console.log(error);
-            toast.error("could not update display picture")
+            dispatch(setUser(updatedUser));
+
+            toast.success("Display picture updated successfully");
+
+        } catch (error) {
+            console.error(
+                "PROFILE PICTURE UPDATE ERROR:",
+                error.response?.data || error.message
+            );
+
+            toast.error(
+                error.response?.data?.message ||
+                "Could not update display picture"
+            );
+
+        } finally {
+            toast.dismiss(toastId);
         }
-        toast.dismiss(toastId)
-    }
+    };
 }
 
 
