@@ -108,7 +108,7 @@ export default function CourseDetails (){
         }
         setConfirmationModal({
             text1: "You are not logged in!",
-            text2: "Please login to add the course to your Cart",
+            text2: "Please login to Buy the course",
             btn1Text: "Login",
             btn2Text : "Cancel",
             btn1Handler: () => navigate("/login"),
