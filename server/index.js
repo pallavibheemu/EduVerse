@@ -23,6 +23,11 @@ database.connect(); //Now your server is connected to MongoDB.
 app.use(express.json()); //Converts JSON into JavaScript objects. "email":"abc@gmail.com" becomes req.body.email
 app.use(cookieParser());
 
+app.use(fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp",
+}));
+
 const allowedOrigins = [
     "http://localhost:3000",
     "https://edu-verse-three-tau.vercel.app"
