@@ -111,7 +111,7 @@ export default function CourseDetails (){
             text2: "Please login to add the course to your Cart",
             btn1Text: "Login",
             btn2Text : "Cancel",
-            btnHandler: () => navigate("/login"),
+            btn1Handler: () => navigate("/login"),
             btn2Handler: () => setConfirmationModal(null)
         })
     }
